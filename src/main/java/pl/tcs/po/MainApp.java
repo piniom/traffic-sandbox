@@ -1,31 +1,24 @@
 package pl.tcs.po;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import pl.tcs.po.models.Board;
+import pl.tcs.po.views.BoardView;
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) {
-        //Creating a scene object
-        Scene scene = new Scene(new Board().getBoardScene());
 
-        //Setting title to the Stage
-        stage.setTitle("Grid Pane Example");
+        Board board = new Board(20 , 10);
+        BoardView boardView = new BoardView(board);
 
-        //Adding scene to the stage
+        Scene scene = new Scene(boardView.getParentView());
+
         stage.setScene(scene);
 
-        //Displaying the contents of the stage
+        stage.setTitle("Traffic Sandbox");
         stage.show();
     }
 

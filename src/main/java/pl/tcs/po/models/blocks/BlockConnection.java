@@ -1,4 +1,4 @@
-package pl.tcs.po;
+package pl.tcs.po.models.blocks;
 
 public class BlockConnection {
     public final Block target;
