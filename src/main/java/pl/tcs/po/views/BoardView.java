@@ -28,7 +28,7 @@ public class BoardView {
 
     private void renderBlocks(GridPane grid, int fromColumn, int toColumn, int fromRow, int toRow) {
         for(int c=fromColumn;c<toColumn;c++){
-            for(int r=fromRow;r<toRow;r++) grid.add(new BlockView(board.getBlock(c,r)).getNode(), c, r);
+            for(int r=fromRow;r<toRow;r++) grid.add(new BlockViewDebug(board.getBlock(c,r)).getNode(), c, r);
         }
     }
 
