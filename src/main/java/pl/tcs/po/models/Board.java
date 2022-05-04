@@ -13,7 +13,7 @@ public class Board {
         this.height = height;
         blocks = new Block[width][height];
         fillBlocksEmpty();
-        setBlocksRandom();
+        //setBlocksRandom();
     }
 
     private void fillBlocksEmpty(){
