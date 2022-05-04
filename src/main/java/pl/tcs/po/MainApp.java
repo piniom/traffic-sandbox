@@ -11,7 +11,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) {
 
-        Board board = new Board(20 , 10);
+        Board board = new Board(100 , 100);
         BoardView boardView = new BoardView(board);
 
         Scene scene = new Scene(boardView.getParentView());

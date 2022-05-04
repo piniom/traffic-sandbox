@@ -11,14 +11,13 @@ public class BlockView{
 
     protected final Image image;
     protected final Block block;
+    protected final ImageLoader imageCache = new ImageLoader();
 
-    private String getImagePathFromBlockName(){
-        return "File:img/" + block.getName() + ".png";
-    }
+
 
     public BlockView(Block block){
         this.block = block;
-        this.image = new Image(getImagePathFromBlockName());
+        this.image = imageCache.loadImage(block.getName());
     }
 
     public Node getNode() {
