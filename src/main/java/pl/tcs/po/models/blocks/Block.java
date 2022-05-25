@@ -24,8 +24,8 @@ public interface Block {
     }
     String getName();
     Rotation getRotation();
-    boolean setOutConnection(int id, BlockConnection connection);
-    boolean setInConnection(int id, BlockConnection connection);
+    boolean setOutConnection(BlockConnection connection);
+    boolean setInConnection(BlockConnection connection);
 
     Polyline getPath(int startId, int endId);
 }

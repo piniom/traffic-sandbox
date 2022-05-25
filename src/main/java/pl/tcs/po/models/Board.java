@@ -1,6 +1,9 @@
 package pl.tcs.po.models;
 
 import pl.tcs.po.models.blocks.*;
+import pl.tcs.po.models.mobile.Vehicle;
+
+import java.util.*;
 
 public class Board {
 
@@ -49,16 +52,65 @@ public class Board {
     }
 
     public void setBlock(int column, int row, Block block){
+        System.out.println("New " + block.getName() + " Block: ["+column+", "+row+"]");
         blocks[column][row] = block;
         for(int i=0;i<4;i++){
             int directionIndex = (i + block.getRotation().index) % 4;
             Block target = getNeighbourBlock(column, row, directionIndex);
             int targetIndex = getTargetIndex(target, directionIndex);
-            block.setOutConnection(i, new BlockConnection(target, targetIndex));
-            target.setOutConnection(targetIndex, new BlockConnection(block, i));
+            block.setOutConnection(new BlockConnection(block, i, target, targetIndex));
+            target.setOutConnection(new BlockConnection(target, targetIndex, block, i));
         }
     }
 
     public int getWidth(){return width;}
     public int getHeight(){return height;}
+
+    private HashSet<Vehicle> vehicles = new HashSet<>();
+
+    public HashSet<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void addVehicle(Vehicle vehicle){
+        vehicles.add(vehicle);
+    }
+
+    public void updateVehicles(double deltaTime){
+        vehicles.forEach(vehicle -> vehicle.updatePosition(deltaTime));
+    }
+
+    public ArrayList<BlockConnection> getPath(Block source, Block target){
+        HashMap<Block, BlockConnection> visited = new HashMap<>();
+        Queue<Block> queue = new LinkedList<>();
+
+
+        queue.add(source);
+
+        while (!queue.isEmpty()){
+            Block current = queue.remove();
+            if(current.equals(target)) break;
+            for(BlockConnection connection : current.getOutConnections()){
+                if(connection == null) continue;
+                if(visited.containsKey( connection.target))continue;
+                visited.put(connection.target, connection);
+                queue.add(connection.target);
+            }
+        }
+
+        ArrayList<BlockConnection> output = new ArrayList<>();
+
+        var current = visited.get(target);
+
+        while(current.source != source){
+            output.add(current);
+            current = visited.get(current.source);
+        }
+
+        output.add(current);
+
+        Collections.reverse(output);
+
+        return output;
+    }
 }
