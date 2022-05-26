@@ -79,6 +79,7 @@ public class BoardController {
             if(e.getButton().equals(MouseButton.PRIMARY)){
                 board.setBlock(column, row, currentBlock.getNewBlock(currentRotation));
                 updateBlock(column, row);
+                System.out.println(board.getPath(1,1,column,row));
             }
 
             // TODO react to right click - rotate block
@@ -92,6 +93,7 @@ public class BoardController {
                  */
                 board.setBlock(column, row, BlockFactory.getRotated(blockToRotate));
                 updateBlock(column, row);
+                System.out.println(board.getPath(1,1,column,row));
             }
         });
         return node;

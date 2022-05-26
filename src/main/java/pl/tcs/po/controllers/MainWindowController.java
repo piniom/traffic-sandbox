@@ -40,6 +40,7 @@ public class MainWindowController implements Initializable {
         mainBoard.getChildren().add(boardController.getParentView());
         menuBar.setSpacing(20);
         addMenuBarButtons();
+
     }
 
     private void addMenuBarButtons() {
@@ -79,7 +80,9 @@ public class MainWindowController implements Initializable {
         debugButton.setGraphic(debugImageView);
         debugButton.setStyle("-fx-background-color: #5d69bf;");
 
-        debugButton.setOnAction(e -> boardController.toggleDebug());
+        debugButton.setOnAction(e -> {
+            boardController.toggleDebug();
+        });
 
         var saveButton = new Button();
         Image saveImage = new Image(getClass().getResource("/images/save.png").toString());

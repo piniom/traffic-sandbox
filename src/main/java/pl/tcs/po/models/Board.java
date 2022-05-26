@@ -52,7 +52,7 @@ public class Board {
     }
 
     public void setBlock(int column, int row, Block block){
-        System.out.println("New " + block.getName() + " Block: ["+column+", "+row+"]");
+        //System.out.println("New " + block.getName() + " Block: ["+column+", "+row+"]");
         blocks[column][row] = block;
         for(int i=0;i<4;i++){
             int directionIndex = (i + block.getRotation().index) % 4;
@@ -81,15 +81,22 @@ public class Board {
     }
 
     public ArrayList<BlockConnection> getPath(Block source, Block target){
+        if(source.equals(target))return new ArrayList<>();
+
         HashMap<Block, BlockConnection> visited = new HashMap<>();
         Queue<Block> queue = new LinkedList<>();
 
 
         queue.add(source);
 
+        boolean pathFound = false;
+
         while (!queue.isEmpty()){
             Block current = queue.remove();
-            if(current.equals(target)) break;
+            if(current.equals(target)){
+                pathFound = true;
+                break;
+            }
             for(BlockConnection connection : current.getOutConnections()){
                 if(connection == null) continue;
                 if(visited.containsKey( connection.target))continue;
@@ -97,6 +104,8 @@ public class Board {
                 queue.add(connection.target);
             }
         }
+
+        if(!pathFound) return null;
 
         ArrayList<BlockConnection> output = new ArrayList<>();
 
@@ -112,5 +121,9 @@ public class Board {
         Collections.reverse(output);
 
         return output;
+    }
+
+    public ArrayList<BlockConnection> getPath(int sourceX, int sourceY, int targetX, int targetY){
+        return getPath(blocks[sourceX][sourceY], blocks[targetX][targetY]);
     }
 }
