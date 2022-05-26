@@ -44,20 +44,18 @@ public abstract class AbstractBlock implements Block {
     @Override
     public ArrayList<Boolean> getInLinks(){return outLinks;}
 
-    private BlockConnection getReversedConnection(int id, BlockConnection connection){
-        return new BlockConnection(this, id);
-    }
-
     @Override
-    public boolean setOutConnection(int id, BlockConnection connection){
+    public boolean setOutConnection(BlockConnection connection){
+        int id = connection.sourceIndex;
         if(!outLinks.get(id)) return false;
-        if(!connection.target.setInConnection(connection.targetIndex, getReversedConnection(id, connection)))return false;
+        if(!connection.target.setInConnection(connection.reversed()))return false;
         outConnections.set(id, connection);
         return true;
     }
 
     @Override
-    public boolean setInConnection(int id, BlockConnection connection){
+    public boolean setInConnection(BlockConnection connection){
+        int id = connection.sourceIndex;
         if(!inLinks.get(id)) return false;
         inConnections.set(id, connection);
         return true;
