@@ -51,4 +51,10 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         mainStage.setScene(scene);
     }
+
+    public void returnToMainMenu() throws IOException {
+        Parent root = getMainMenuWindow();
+        Scene scene = new Scene(root);
+        mainStage.setScene(scene);
+    }
 }

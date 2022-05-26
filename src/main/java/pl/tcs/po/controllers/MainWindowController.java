@@ -2,17 +2,20 @@ package pl.tcs.po.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import pl.tcs.po.MainApp;
 import pl.tcs.po.models.*;
 import pl.tcs.po.models.blocks.BlockCreator;
 import pl.tcs.po.models.blocks.EmptyBlock;
 import pl.tcs.po.models.blocks.Rotation;
 import pl.tcs.po.views.ImageLoader;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,11 @@ public class MainWindowController implements Initializable {
     }
 
     private void addMenuBarButtons() {
+        /**
+         *
+         * TODO: make imageLoader a singleton?
+         * TODO: maybe have the empty map preloaded?
+         */
         ImageLoader imageLoader = new ImageLoader();
         List<Button> blockButtons = new ArrayList<>();
         for(var menuButton : BlockCreator.values()){
@@ -54,27 +62,64 @@ public class MainWindowController implements Initializable {
 
             button.setOnAction(e -> {
                 boardController.currentBlock = menuButton;
-                boardController.currentText.setText(boardController.currentBlock.name());
             });
             blockButtons.add(button);
         }
 
-        List<Button> rotationButtons = new ArrayList<>();
-        for(var rotation : Rotation.values()){
-            var button = new Button(rotation.toString().toLowerCase());
-            button.setOnAction(e -> {
-                boardController.currentRotation = rotation;
-            });
-            rotationButtons.add(button);
-        }
-
+        menuBar.getChildren().add(createSpacer());
         menuBar.getChildren().addAll(blockButtons);
-        menuBar.getChildren().add(boardController.currentText);
-        menuBar.getChildren().addAll(rotationButtons);
+        menuBar.getChildren().add(createSpacer());
 
-        var button = new Button("toggle debug");
-        button.setOnAction(e -> boardController.toggleDebug());
-        menuBar.getChildren().add(button);
+        // TODO: create a method for this button modification
+        var debugButton = new Button();
+        Image debugImage = new Image(getClass().getResource("/images/debug.png").toString());
+        ImageView debugImageView = new ImageView(debugImage);
+        debugImageView.setFitWidth(90);
+        debugImageView.setFitHeight(30);
+        debugButton.setGraphic(debugImageView);
+        debugButton.setStyle("-fx-background-color: #5d69bf;");
+
+        debugButton.setOnAction(e -> boardController.toggleDebug());
+
+        var saveButton = new Button();
+        Image saveImage = new Image(getClass().getResource("/images/save.png").toString());
+        ImageView saveImageView = new ImageView(saveImage);
+        saveImageView.setFitWidth(90);
+        saveImageView.setFitHeight(30);
+        saveButton.setGraphic(saveImageView);
+        saveButton.setStyle("-fx-background-color: #5d69bf;");
+        //TODO: set on action
+
+        var exitButton = new Button();
+        Image exitImage = new Image(getClass().getResource("/images/exit.png").toString());
+        ImageView exitImageView = new ImageView(exitImage);
+        exitImageView.setFitWidth(90);
+        exitImageView.setFitHeight(30);
+        exitButton.setGraphic(exitImageView);
+        exitButton.setStyle("-fx-background-color: #5d69bf;");
+
+        exitButton.setOnAction(e ->{
+            try {
+                MainApp.instance.returnToMainMenu();
+            } catch(IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+
+        menuBar.getChildren().addAll(saveButton, exitButton, debugButton);
+        menuBar.getChildren().add(createSpacer());
+    }
+
+    /**
+     * returns a spacer used to space elements in VBox or HBox evenly
+     * TODO: repeated code - put this in some factory or something
+     */
+    private Node createSpacer() {
+        final Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        return spacer;
     }
 }
 
