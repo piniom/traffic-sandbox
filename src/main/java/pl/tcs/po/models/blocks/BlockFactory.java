@@ -34,4 +34,25 @@ public class BlockFactory {
         out.add(new EmptyBlock());
         return out;
     }
+
+    public static Block getRotated(Block blockToRotate) {
+        Rotation nextRotation = Rotation.getNextRotation(blockToRotate.getRotation());
+
+        switch(blockToRotate.getName()) {
+            case "straight":
+                return new StraightBlock(nextRotation);
+            case "curve":
+                return new CurveBlock(nextRotation);
+            case "Tjunction":
+                return new TJunctionBlock(nextRotation);
+            case "junction":
+                return new JunctionBlock(nextRotation);
+            case "roundabout":
+                return new RoundaboutBlock(nextRotation);
+            case "end":
+                return new EndBlock(nextRotation);
+            default:
+                return new EmptyBlock();
+        }
+    }
 }

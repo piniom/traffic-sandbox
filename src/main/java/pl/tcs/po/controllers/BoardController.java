@@ -8,7 +8,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import pl.tcs.po.models.Board;
+import pl.tcs.po.models.blocks.Block;
 import pl.tcs.po.models.blocks.BlockCreator;
+import pl.tcs.po.models.blocks.BlockFactory;
 import pl.tcs.po.models.blocks.Rotation;
 import pl.tcs.po.views.BlockView;
 import pl.tcs.po.views.BlockViewDebug;
@@ -76,6 +78,19 @@ public class BoardController {
         node.setOnMouseClicked(e -> {
             if(e.getButton().equals(MouseButton.PRIMARY)){
                 board.setBlock(column, row, currentBlock.getNewBlock(currentRotation));
+                updateBlock(column, row);
+            }
+
+            // TODO react to right click - rotate block
+            if(e.getButton().equals(MouseButton.SECONDARY)) {
+                Block blockToRotate = board.getBlock(column, row);
+
+                /**
+                 * TODO: this should call blockToRotate.getRotated()
+                 * so that we do not have a switch statement.
+                 * Block should store its type, so that it knows, which type to return
+                 */
+                board.setBlock(column, row, BlockFactory.getRotated(blockToRotate));
                 updateBlock(column, row);
             }
         });

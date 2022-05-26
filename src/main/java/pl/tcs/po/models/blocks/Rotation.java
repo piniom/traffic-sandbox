@@ -27,4 +27,17 @@ public enum Rotation {
         //return NORTH;
         return VALUES.get(RANDOM.nextInt(SIZE));
     }
+
+    public static Rotation getNextRotation(Rotation rotation) {
+        if(rotation == NORTH) {
+            return EAST;
+        }
+        if(rotation == EAST) {
+            return SOUTH;
+        }
+        if(rotation == SOUTH) {
+            return WEST;
+        }
+        return NORTH;
+    }
 }

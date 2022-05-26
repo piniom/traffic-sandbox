@@ -54,6 +54,8 @@ public class MainMenuController implements Initializable {
     }
 
     private void initializeButtons() {
+        // TODO change this to use ImageLoader
+        // TODO also image on button should have no background, background should be set through css styles
         Image newImage = new Image(getClass().getResource("/images/new.png").toString());
         ImageView newImageView = new ImageView(newImage);
         Image loadImage = new Image(getClass().getResource("/images/load.png").toString());
