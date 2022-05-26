@@ -19,3 +19,9 @@ gradle > TrafficSandbox > Tasks > application > run
   - Board building 
   - Load 
   - Debug View 
+- **Version 1.1** - 2022/05/26
+  - GUI scope changes
+  - GUI improvements
+  - User experience improvements
+  - Path finding algorithm
+  - Fundations for the car logic
