@@ -24,6 +24,7 @@ public class BoardController {
     BlockCreator currentBlock = BlockCreator.EMPTY;
     Rotation currentRotation = Rotation.NORTH;
     Block previousBlock = BlockCreator.EMPTY.getNewBlock(null, currentRotation);
+    boolean dragDetected = false;
 
     Text currentText = new Text();
 
@@ -85,7 +86,13 @@ public class BoardController {
         Node node;
         if(isDebug) node = new BlockViewDebug(board.getBlock(column, row)).getNode();
         else node = new BlockView(board.getBlock(column, row)).getNode();
+
         node.setOnMouseClicked(e -> {
+            if(dragDetected) {
+                dragDetected = false;
+                return;
+            }
+
             if(e.getButton().equals(MouseButton.PRIMARY)){
                 board.setBlock(column, row, currentBlock.getNewBlock(board.cellPosition(column, row), currentRotation));
                 updateBlock(column, row);
@@ -165,5 +172,9 @@ public class BoardController {
     public void resetPrevious() {
         previousColumn = -1;
         previousRow = -1;
+    }
+
+    public void handleDragDetected() {
+        dragDetected = true;
     }
 }
