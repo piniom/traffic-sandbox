@@ -126,6 +126,10 @@ public class Board {
         return getPath(blocks[sourceX][sourceY], blocks[targetX][targetY]);
     }
 
+    public boolean correctCoords(int column, int row) {
+        return column >= 0 && column < getWidth() && row >= 0 && row < getHeight();
+    }
+
     public void update(double deltaTime){
         for(var row : blocks)for(var block : row)block.update(deltaTime);
     }

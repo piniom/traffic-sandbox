@@ -8,21 +8,28 @@ public class BlockFactory {
     public static Block getRotated(Block blockToRotate) {
         Rotation nextRotation = Rotation.getNextRotation(blockToRotate.getRotation());
 
-        switch(blockToRotate.getName()) {
-            case "straight":
-                return new StraightBlock(blockToRotate.getPosition(), nextRotation);
-            case "curve":
-                return new CurveBlock(blockToRotate.getPosition(), nextRotation);
-            case "Tjunction":
-                return new TJunctionBlock(blockToRotate.getPosition(), nextRotation);
-            case "junction":
-                return new JunctionBlock(blockToRotate.getPosition(), nextRotation);
-            case "roundabout":
-                return new RoundaboutBlock(blockToRotate.getPosition(), nextRotation);
-            case "end":
-                return new EndBlock(blockToRotate.getPosition(), nextRotation);
-            default:
-                return new EmptyBlock(blockToRotate.getPosition());
-        }
+        return switch (blockToRotate.getName()) {
+            case "straight" -> new StraightBlock(nextRotation);
+            case "curve" -> new CurveBlock(nextRotation);
+            case "Tjunction" -> new TJunctionBlock(nextRotation);
+            case "junction" -> new JunctionBlock(nextRotation);
+            case "roundabout" -> new RoundaboutBlock(nextRotation);
+            case "end" -> new EndBlock(nextRotation);
+            default -> new EmptyBlock();
+        };
+    }
+
+    public static Block getFaded(Block blockToFade) {
+        Rotation rotation = blockToFade.getRotation();
+
+        return switch (blockToFade.getName()) {
+            case "straight" -> new FadedStraightBlock(rotation);
+            case "curve" -> new FadedCurveBlock(rotation);
+            case "Tjunction" -> new FadedTJunctionBlock(rotation);
+            case "junction" -> new FadedJunctionBlock(rotation);
+            case "roundabout" -> new FadedRoundaboutBlock(rotation);
+            case "end" -> new FadedEndBlock(rotation);
+            default -> new FadedEmptyBlock();
+        };
     }
 }

@@ -40,7 +40,14 @@ public class MainWindowController implements Initializable {
         mainBoard.getChildren().add(boardController.getParentView());
         menuBar.setSpacing(20);
         addMenuBarButtons();
+        initializeCorrectFading();
+    }
 
+    private void initializeCorrectFading() {
+        menuBar.setOnMouseEntered(e -> {
+            boardController.updatePreviousBlock();
+            boardController.resetPrevious();
+        });
     }
 
     private void addMenuBarButtons() {
