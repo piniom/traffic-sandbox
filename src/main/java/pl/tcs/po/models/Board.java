@@ -1,6 +1,7 @@
 package pl.tcs.po.models;
 
 import pl.tcs.po.models.blocks.*;
+import pl.tcs.po.models.mobile.Vector2;
 import pl.tcs.po.models.mobile.Vehicle;
 
 import java.util.*;
@@ -19,15 +20,13 @@ public class Board {
         //setBlocksRandom();
     }
 
-    private void fillBlocksEmpty(){
-        for(int c=0;c<width;c++){
-            for(int r=0;r<height;r++)blocks[c][r] = new EmptyBlock();
-        }
+    public Vector2 cellPosition(int column, int row){
+        return new Vector2(column*Block.getDimensions().length(), row*Block.getDimensions().height());
     }
 
-    private void setBlocksRandom(){
-        for(int c=1;c<width-1;c++){
-            for(int r=1;r<height-1;r++)setBlock(c,r,BlockFactory.getRandomBlock());
+    private void fillBlocksEmpty(){
+        for(int c=0;c<width;c++){
+            for(int r=0;r<height;r++)blocks[c][r] = new EmptyBlock(cellPosition(c, r));
         }
     }
 
@@ -125,5 +124,9 @@ public class Board {
 
     public ArrayList<BlockConnection> getPath(int sourceX, int sourceY, int targetX, int targetY){
         return getPath(blocks[sourceX][sourceY], blocks[targetX][targetY]);
+    }
+
+    public void update(double deltaTime){
+        for(var row : blocks)for(var block : row)block.update(deltaTime);
     }
 }

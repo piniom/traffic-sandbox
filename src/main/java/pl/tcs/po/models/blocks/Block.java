@@ -1,8 +1,11 @@
 package pl.tcs.po.models.blocks;
 
 import javafx.scene.shape.Polyline;
+import pl.tcs.po.models.mobile.Vector2;
+import pl.tcs.po.models.mobile.Vehicle;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public interface Block {
     ArrayList<BlockConnection> getOutConnections();
@@ -28,4 +31,15 @@ public interface Block {
     boolean setInConnection(BlockConnection connection);
 
     Polyline getPath(int startId, int endId);
+
+    void update(double deltaTime);
+    void receiveVehicle(BlockConnection connection, Vehicle vehicle);
+    Collection<Vehicle> getVehicles();
+
+    static Vector2 getDimensions(){
+        return new Vector2(100, 100);
+    }
+
+    Vector2 getPosition();
+
 }

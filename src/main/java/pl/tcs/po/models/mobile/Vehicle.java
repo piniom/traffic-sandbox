@@ -3,7 +3,7 @@ package pl.tcs.po.models.mobile;
 public class Vehicle {
 
     public final double maxSpeed = 30;
-    public final Vector2 dimensions = new Vector2(1.5, 3);
+    public final Vector2 dimensions = new Vector2(2, 4);
 
     private Vector2 position;
     private Vector2 velocity;
@@ -28,4 +28,6 @@ public class Vehicle {
     public double getRotation(){
         return velocity.rotationDegrees();
     }
+
+    public Vector2 getPosition(){return position;}
 }

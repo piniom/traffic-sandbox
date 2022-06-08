@@ -37,4 +37,7 @@ public record Vector2(double x, double y) {
     public double rotationDegrees(){
         return Math.toDegrees(rotationRadians());
     }
+
+    public double width(){return x;}
+    public double height(){return y;}
 }

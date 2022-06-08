@@ -1,41 +1,43 @@
 package pl.tcs.po.models.blocks;
 
 
+import pl.tcs.po.models.mobile.Vector2;
+
 public enum BlockCreator {
     STRAIGHT() {
         @Override
-        public Block getNewBlock(Rotation rotation) {
-            return new StraightBlock(rotation);
+        public Block getNewBlock(Vector2 position, Rotation rotation) {
+            return new StraightBlock(position, rotation);
         }
     },
     CURVE() {
         @Override
-        public Block getNewBlock(Rotation rotation) {
-            return new CurveBlock(rotation);
+        public Block getNewBlock(Vector2 position, Rotation rotation) {
+            return new CurveBlock(position, rotation);
         }
     },
     TJUNCTION() {
         @Override
-        public Block getNewBlock(Rotation rotation) {
-            return new TJunctionBlock(rotation);
+        public Block getNewBlock(Vector2 position, Rotation rotation) {
+            return new TJunctionBlock(position, rotation);
         }
     },
     JUNCTION(){
         @Override
-        public Block getNewBlock(Rotation rotation) {
-            return new JunctionBlock(rotation);
+        public Block getNewBlock(Vector2 position, Rotation rotation) {
+            return new JunctionBlock(position, rotation);
         }
     },
     ROUNDABOUT(){
         @Override
-        public Block getNewBlock(Rotation rotation) {
-            return new RoundaboutBlock(rotation);
+        public Block getNewBlock(Vector2 position, Rotation rotation) {
+            return new RoundaboutBlock(position, rotation);
         }
     },
     END(){
         @Override
-        public Block getNewBlock(Rotation rotation) {
-            return new EndBlock(rotation);
+        public Block getNewBlock(Vector2 position, Rotation rotation) {
+            return new EndBlock(position, rotation);
         }
     },
     EMPTY()
@@ -44,7 +46,7 @@ public enum BlockCreator {
 
     BlockCreator() {}
 
-    public Block getNewBlock(Rotation rotation) {
-        return new EmptyBlock();
+    public Block getNewBlock(Vector2 position, Rotation rotation) {
+        return new EmptyBlock(position, rotation);
     }
 }

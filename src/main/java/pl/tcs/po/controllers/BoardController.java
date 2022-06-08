@@ -77,7 +77,7 @@ public class BoardController {
         else node = new BlockView(board.getBlock(column, row)).getNode();
         node.setOnMouseClicked(e -> {
             if(e.getButton().equals(MouseButton.PRIMARY)){
-                board.setBlock(column, row, currentBlock.getNewBlock(currentRotation));
+                board.setBlock(column, row, currentBlock.getNewBlock(board.cellPosition(column, row), currentRotation));
                 updateBlock(column, row);
                 System.out.println(board.getPath(1,1,column,row));
             }

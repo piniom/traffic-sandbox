@@ -5,54 +5,24 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockFactory {
-    private static final Random RANDOM = new Random();
-
-    public static Block getRandomBlock(){
-        return switch (RANDOM.nextInt(13)) {
-            case 0,1,8 -> new StraightBlock(Rotation.getRandomRotation());
-            case 2,3,9 -> new CurveBlock(Rotation.getRandomRotation());
-            case 10, 11 -> new EndBlock(Rotation.getRandomRotation());
-            case 4,5 -> new TJunctionBlock(Rotation.getRandomRotation());
-            case 6 -> new JunctionBlock(Rotation.getRandomRotation());
-            case 7 -> new RoundaboutBlock(Rotation.getRandomRotation());
-            default -> new EmptyBlock();
-        };
-    }
-
-    public static HashSet<Block> getAllBlocks(){
-        HashSet<Block> out = new HashSet<>();
-        for(Rotation r : Rotation.values()){
-            out.addAll(List.of(
-                    new StraightBlock(r),
-                    new CurveBlock(r),
-                    new EndBlock(r),
-                    new TJunctionBlock(r),
-                    new JunctionBlock(r),
-                    new RoundaboutBlock(r)
-                    ));
-        }
-        out.add(new EmptyBlock());
-        return out;
-    }
-
     public static Block getRotated(Block blockToRotate) {
         Rotation nextRotation = Rotation.getNextRotation(blockToRotate.getRotation());
 
         switch(blockToRotate.getName()) {
             case "straight":
-                return new StraightBlock(nextRotation);
+                return new StraightBlock(blockToRotate.getPosition(), nextRotation);
             case "curve":
-                return new CurveBlock(nextRotation);
+                return new CurveBlock(blockToRotate.getPosition(), nextRotation);
             case "Tjunction":
-                return new TJunctionBlock(nextRotation);
+                return new TJunctionBlock(blockToRotate.getPosition(), nextRotation);
             case "junction":
-                return new JunctionBlock(nextRotation);
+                return new JunctionBlock(blockToRotate.getPosition(), nextRotation);
             case "roundabout":
-                return new RoundaboutBlock(nextRotation);
+                return new RoundaboutBlock(blockToRotate.getPosition(), nextRotation);
             case "end":
-                return new EndBlock(nextRotation);
+                return new EndBlock(blockToRotate.getPosition(), nextRotation);
             default:
-                return new EmptyBlock();
+                return new EmptyBlock(blockToRotate.getPosition());
         }
     }
 }

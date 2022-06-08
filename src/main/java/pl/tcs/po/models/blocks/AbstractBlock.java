@@ -1,8 +1,11 @@
 package pl.tcs.po.models.blocks;
 
 import javafx.scene.shape.Polyline;
+import pl.tcs.po.models.mobile.Vector2;
+import pl.tcs.po.models.mobile.Vehicle;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 public abstract class AbstractBlock implements Block {
@@ -10,12 +13,14 @@ public abstract class AbstractBlock implements Block {
     private static int SIDES_COUNT = 4;
 
     private Rotation rotation;
+    private final Vector2 position;
     protected ArrayList<BlockConnection> outConnections;
     protected ArrayList<BlockConnection> inConnections;
     protected ArrayList<Boolean> outLinks;
     protected ArrayList<Boolean> inLinks;
 
-    public AbstractBlock(Rotation rotation){
+    public AbstractBlock(Vector2 position, Rotation rotation){
+        this.position = position;
         this.rotation = rotation;
         this.outConnections = new ArrayList<>(Collections.nCopies(SIDES_COUNT, null));
         this.inConnections = new ArrayList<>(Collections.nCopies(SIDES_COUNT, null));
@@ -70,10 +75,10 @@ public abstract class AbstractBlock implements Block {
         setOutLink(direction, value);
     }
 
-    private double blockSize = 100;
+    private double blockSize = Block.getDimensions().length();
     private double lineWidth = 10;
     private double lineCenter = lineWidth/2;
-    private double middle = 50;
+    private double middle = blockSize/2;
 
     private double getX(int index, boolean isIn, double fraction){
         return switch (index){
@@ -89,14 +94,13 @@ public abstract class AbstractBlock implements Block {
         return getX((index + 3)%4, isIn, fraction);
     }
 
-    protected boolean checkPathEndpoints(int startId, int endId){
-        if(!getInLink(startId) || !getOutLink(endId)) return false;
-        return true;
+    protected boolean wrongPathEndpoints(int startId, int endId){
+        return !getInLink(startId) || !getOutLink(endId);
     }
 
     @Override
     public Polyline getPath(int startId, int endId){
-        if(!checkPathEndpoints(startId, endId)) throw new PathNotAvailableException();
+        if(wrongPathEndpoints(startId, endId)) throw new PathNotAvailableException();
         var path = new Polyline();
         path.getPoints()
                 .addAll(
@@ -109,4 +113,30 @@ public abstract class AbstractBlock implements Block {
     }
 
     public static class PathNotAvailableException extends RuntimeException{};
+
+    private final ArrayList<Vehicle> vehicles = new ArrayList<>();
+
+    {
+        vehicles.add(new Vehicle(new Vector2(50, 50)));
+    }
+
+    public void update(double deltaTime){
+        for(var vehicle: vehicles){
+            vehicle.updatePosition(deltaTime);
+            vehicle.updateSpeed(deltaTime, 1);
+        }
+    }
+
+    public Vector2 getPosition(){
+        return position;
+    }
+
+    public Collection<Vehicle> getVehicles(){
+        return vehicles;
+    }
+
+    public void receiveVehicle(BlockConnection connection, Vehicle vehicle){
+
+    }
+
 }

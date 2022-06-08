@@ -1,9 +1,11 @@
 package pl.tcs.po.models.blocks;
 
+import pl.tcs.po.models.mobile.Vector2;
+
 public class TJunctionBlock extends AbstractBlock{
 
-    public TJunctionBlock(Rotation rotation) {
-        super(rotation);
+    public TJunctionBlock(Vector2 position, Rotation rotation) {
+        super(position, rotation);
         setBiLink(Rotation.NORTH, true);
         setBiLink(Rotation.EAST, true);
         setBiLink(Rotation.SOUTH, true);
@@ -15,8 +17,8 @@ public class TJunctionBlock extends AbstractBlock{
     }
 
     @Override
-    protected boolean checkPathEndpoints(int startId, int endId){
-        if(startId == endId) return false;
-        return super.checkPathEndpoints(startId, endId);
+    protected boolean wrongPathEndpoints(int startId, int endId){
+        if(startId == endId) return true;
+        return super.wrongPathEndpoints(startId, endId);
     }
 }
