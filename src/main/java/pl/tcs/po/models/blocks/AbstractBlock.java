@@ -19,6 +19,11 @@ public abstract class AbstractBlock implements Block {
     protected ArrayList<Boolean> outLinks;
     protected ArrayList<Boolean> inLinks;
 
+    //TODO: Remove this constructor and fix the backward compatibility issues
+    public AbstractBlock(Rotation rotation){
+        this(null, rotation);
+    }
+
     public AbstractBlock(Vector2 position, Rotation rotation){
         this.position = position;
         this.rotation = rotation;
@@ -94,13 +99,13 @@ public abstract class AbstractBlock implements Block {
         return getX((index + 3)%4, isIn, fraction);
     }
 
-    protected boolean wrongPathEndpoints(int startId, int endId){
-        return !getInLink(startId) || !getOutLink(endId);
+    protected boolean checkPathEndpoints(int startId, int endId){
+        return !(!getInLink(startId) || !getOutLink(endId));
     }
 
     @Override
     public Polyline getPath(int startId, int endId){
-        if(wrongPathEndpoints(startId, endId)) throw new PathNotAvailableException();
+        if(checkPathEndpoints(startId, endId)) throw new PathNotAvailableException();
         var path = new Polyline();
         path.getPoints()
                 .addAll(

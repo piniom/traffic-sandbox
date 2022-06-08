@@ -12,6 +12,7 @@ import pl.tcs.po.models.blocks.Block;
 import pl.tcs.po.models.blocks.BlockCreator;
 import pl.tcs.po.models.blocks.BlockFactory;
 import pl.tcs.po.models.blocks.Rotation;
+import pl.tcs.po.models.mobile.Vector2;
 import pl.tcs.po.views.BlockView;
 import pl.tcs.po.views.BlockViewDebug;
 
@@ -22,7 +23,7 @@ public class BoardController {
     private boolean isDebug;
     BlockCreator currentBlock = BlockCreator.EMPTY;
     Rotation currentRotation = Rotation.NORTH;
-    Block previousBlock = BlockCreator.EMPTY.getNewBlock(currentRotation);
+    Block previousBlock = BlockCreator.EMPTY.getNewBlock(null, currentRotation);
 
     Text currentText = new Text();
 
@@ -122,7 +123,7 @@ public class BoardController {
                  * Block should store its type, so that it knows, which type to return
                  */
                 previousBlock = blockToFade;
-                board.setBlock(column, row, BlockFactory.getFaded(currentBlock.getNewBlock(currentRotation)));
+                board.setBlock(column, row, BlockFactory.getFaded(currentBlock.getNewBlock(null, currentRotation)));
 
                 updateBlock(column, row);
             }

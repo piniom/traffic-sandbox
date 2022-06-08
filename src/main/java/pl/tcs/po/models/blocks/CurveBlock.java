@@ -16,8 +16,8 @@ public class CurveBlock extends AbstractBlock{
     }
 
     @Override
-    protected boolean wrongPathEndpoints(int startId, int endId){
+    protected boolean checkPathEndpoints(int startId, int endId){
         if(startId == endId) return true;
-        return super.wrongPathEndpoints(startId, endId);
+        return super.checkPathEndpoints(startId, endId);
     }
 }

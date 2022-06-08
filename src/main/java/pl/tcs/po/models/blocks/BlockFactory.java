@@ -9,13 +9,13 @@ public class BlockFactory {
         Rotation nextRotation = Rotation.getNextRotation(blockToRotate.getRotation());
 
         return switch (blockToRotate.getName()) {
-            case "straight" -> new StraightBlock(nextRotation);
-            case "curve" -> new CurveBlock(nextRotation);
-            case "Tjunction" -> new TJunctionBlock(nextRotation);
-            case "junction" -> new JunctionBlock(nextRotation);
-            case "roundabout" -> new RoundaboutBlock(nextRotation);
-            case "end" -> new EndBlock(nextRotation);
-            default -> new EmptyBlock();
+            case "straight" -> new StraightBlock(blockToRotate.getPosition(), nextRotation);
+            case "curve" -> new CurveBlock(blockToRotate.getPosition(), nextRotation);
+            case "Tjunction" -> new TJunctionBlock(blockToRotate.getPosition(), nextRotation);
+            case "junction" -> new JunctionBlock(blockToRotate.getPosition(),nextRotation);
+            case "roundabout" -> new RoundaboutBlock(blockToRotate.getPosition(), nextRotation);
+            case "end" -> new EndBlock(blockToRotate.getPosition(), nextRotation);
+            default -> new EmptyBlock(blockToRotate.getPosition());
         };
     }
 
