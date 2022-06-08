@@ -126,4 +126,8 @@ public class Board {
     public ArrayList<BlockConnection> getPath(int sourceX, int sourceY, int targetX, int targetY){
         return getPath(blocks[sourceX][sourceY], blocks[targetX][targetY]);
     }
+
+    public boolean correctCoords(int column, int row) {
+        return column >= 0 && column < getWidth() && row >= 0 && row < getHeight();
+    }
 }

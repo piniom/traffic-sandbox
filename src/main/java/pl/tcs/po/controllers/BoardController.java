@@ -22,7 +22,12 @@ public class BoardController {
     private boolean isDebug;
     BlockCreator currentBlock = BlockCreator.EMPTY;
     Rotation currentRotation = Rotation.NORTH;
+    Block previousBlock = BlockCreator.EMPTY.getNewBlock(currentRotation);
+
     Text currentText = new Text();
+
+    private int previousColumn = -1;
+    private int previousRow = -1;
 
     public BoardController(Board board, boolean isDebug){
         this.board = board;
@@ -48,6 +53,10 @@ public class BoardController {
     }
 
     public void updateBlock(int column, int row){
+        if(!board.correctCoords(column, row)) {
+            return;
+        }
+
         if(isDebug){
             renderBlocks();
             return;
@@ -82,7 +91,6 @@ public class BoardController {
                 System.out.println(board.getPath(1,1,column,row));
             }
 
-            // TODO react to right click - rotate block
             if(e.getButton().equals(MouseButton.SECONDARY)) {
                 Block blockToRotate = board.getBlock(column, row);
 
@@ -93,10 +101,50 @@ public class BoardController {
                  */
                 board.setBlock(column, row, BlockFactory.getRotated(blockToRotate));
                 updateBlock(column, row);
+
+                currentRotation = board.getBlock(column, row).getRotation();
+
                 System.out.println(board.getPath(1,1,column,row));
             }
+
+            previousBlock = board.getBlock(column, row);
         });
+
+        node.setOnMouseEntered(e -> {
+            if(enteredNewBlock(column, row)) {
+
+                updatePreviousBlock();
+
+                Block blockToFade = board.getBlock(column, row);
+                /**
+                 * TODO: this should call blockToFade.getFaded()
+                 * so that we do not have a switch statement.
+                 * Block should store its type, so that it knows, which type to return
+                 */
+                previousBlock = blockToFade;
+                board.setBlock(column, row, BlockFactory.getFaded(currentBlock.getNewBlock(currentRotation)));
+
+                updateBlock(column, row);
+            }
+        });
+
+        node.setOnMouseExited(e -> {
+            updatePreviousCoordinates(column, row);
+
+            board.setBlock(column, row, previousBlock);
+            //updateBlock(column, row) is called when mouse enters next block. This is necessary, because updateBlock makes mouse exit and enter again
+        });
+
         return node;
+    }
+
+    private void updatePreviousCoordinates(int column, int row) {
+        previousColumn = column;
+        previousRow = row;
+    }
+
+    private boolean enteredNewBlock(int newColumn, int newRow) {
+        return newColumn != previousColumn || newRow != previousRow;
     }
 
     public void toggleDebug(){
@@ -106,5 +154,15 @@ public class BoardController {
 
     void renderBlocks(){
         renderBlocks(1 ,board.getWidth()-1, 1, board.getHeight()-1);
+    }
+
+    public void updatePreviousBlock() {
+        // does nothing if previous coords are not correct
+        updateBlock(previousColumn, previousRow);
+    }
+
+    public void resetPrevious() {
+        previousColumn = -1;
+        previousRow = -1;
     }
 }
