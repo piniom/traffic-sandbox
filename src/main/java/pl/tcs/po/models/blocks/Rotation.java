@@ -40,4 +40,8 @@ public enum Rotation {
         }
         return NORTH;
     }
+
+    double radians(){
+        return Math.toRadians(degrees);
+    }
 }

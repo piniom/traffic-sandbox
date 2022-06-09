@@ -7,12 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import pl.tcs.po.MainApp;
 import pl.tcs.po.models.*;
 import pl.tcs.po.models.blocks.BlockCreator;
-import pl.tcs.po.models.blocks.EmptyBlock;
-import pl.tcs.po.models.blocks.Rotation;
 import pl.tcs.po.views.ImageLoader;
 
 import java.io.IOException;
@@ -79,16 +76,16 @@ public class MainWindowController implements Initializable {
         menuBar.getChildren().add(createSpacer());
 
         // TODO: create a method for this button modification
-        var debugButton = new Button();
+        var runningButton = new Button();
         Image debugImage = new Image(getClass().getResource("/images/debug.png").toString());
         ImageView debugImageView = new ImageView(debugImage);
         debugImageView.setFitWidth(90);
         debugImageView.setFitHeight(30);
-        debugButton.setGraphic(debugImageView);
-        debugButton.setStyle("-fx-background-color: #5d69bf;");
+        runningButton.setGraphic(debugImageView);
+        runningButton.setStyle("-fx-background-color: #5d69bf;");
 
-        debugButton.setOnAction(e -> {
-            boardController.toggleDebug();
+        runningButton.setOnAction(e -> {
+            boardController.toggleRunning();
         });
 
         var saveButton = new Button();
@@ -117,7 +114,7 @@ public class MainWindowController implements Initializable {
         });
 
 
-        menuBar.getChildren().addAll(saveButton, exitButton, debugButton);
+        menuBar.getChildren().addAll(saveButton, exitButton, runningButton);
         menuBar.getChildren().add(createSpacer());
     }
 

@@ -12,6 +12,7 @@ import pl.tcs.po.models.blocks.AbstractBlock;
 import pl.tcs.po.models.blocks.Block;
 import pl.tcs.po.models.blocks.BlockConnection;
 import pl.tcs.po.models.blocks.Rotation;
+import pl.tcs.po.models.mobile.PointPath;
 
 import java.util.function.Function;
 
@@ -21,12 +22,18 @@ public class BlockViewDebug extends BlockView{
         super(block);
     }
 
+    Polyline pointPathToPolyline(PointPath path){
+        var line = new Polyline();
+        for(var p : path)line.getPoints().addAll(p.x(), p.y());
+        return line;
+    }
+
     Pane getPaths(){
         Pane pane = new StackPane();
         for(int in=0;in<4;in++){
             for(int out=0;out<4;out++){
                 try{
-                    pane.getChildren().add(new Pane(block.getPath(in, out)));
+                    pane.getChildren().add(new Pane(pointPathToPolyline( block.getPath(in, out))));
                 }catch (AbstractBlock.PathNotAvailableException ignored){}
             }
         }

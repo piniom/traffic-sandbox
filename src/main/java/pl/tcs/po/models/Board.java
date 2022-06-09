@@ -20,8 +20,8 @@ public class Board {
         //setBlocksRandom();
     }
 
-    public Vector2 cellPosition(int column, int row){
-        return new Vector2(column*Block.getDimensions().length(), row*Block.getDimensions().height());
+    public Vector2 cellPosition(int column, int row) {
+        return new Vector2(column * Block.getDimensions().width(), row * Block.getDimensions().height());
     }
 
     private void fillBlocksEmpty(){
@@ -64,20 +64,6 @@ public class Board {
 
     public int getWidth(){return width;}
     public int getHeight(){return height;}
-
-    private HashSet<Vehicle> vehicles = new HashSet<>();
-
-    public HashSet<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void addVehicle(Vehicle vehicle){
-        vehicles.add(vehicle);
-    }
-
-    public void updateVehicles(double deltaTime){
-        vehicles.forEach(vehicle -> vehicle.updatePosition(deltaTime));
-    }
 
     public ArrayList<BlockConnection> getPath(Block source, Block target){
         if(source.equals(target))return new ArrayList<>();
@@ -130,7 +116,13 @@ public class Board {
         return column >= 0 && column < getWidth() && row >= 0 && row < getHeight();
     }
 
-    public void update(double deltaTime){
+    public void update(long deltaTime){
         for(var row : blocks)for(var block : row)block.update(deltaTime);
+    }
+
+    public Collection<Vehicle> getVehicles(){
+        List<Vehicle> vehicles = new LinkedList<>();
+        for(var row : blocks)for(var block : row)vehicles.addAll(block.getVehicles());
+        return vehicles;
     }
 }

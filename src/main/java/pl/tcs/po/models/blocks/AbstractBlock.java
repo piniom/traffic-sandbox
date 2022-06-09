@@ -1,6 +1,7 @@
 package pl.tcs.po.models.blocks;
 
 import javafx.scene.shape.Polyline;
+import pl.tcs.po.models.mobile.PointPath;
 import pl.tcs.po.models.mobile.Vector2;
 import pl.tcs.po.models.mobile.Vehicle;
 
@@ -21,10 +22,11 @@ public abstract class AbstractBlock implements Block {
 
     //TODO: Remove this constructor and fix the backward compatibility issues
     public AbstractBlock(Rotation rotation){
-        this(null, rotation);
+        this(new Vector2(), rotation);
     }
 
     public AbstractBlock(Vector2 position, Rotation rotation){
+        if(position != null) System.out.println(position.x() + " + " + position.y());
         this.position = position;
         this.rotation = rotation;
         this.outConnections = new ArrayList<>(Collections.nCopies(SIDES_COUNT, null));
@@ -104,28 +106,21 @@ public abstract class AbstractBlock implements Block {
     }
 
     @Override
-    public Polyline getPath(int startId, int endId){
+    public PointPath getPath(int startId, int endId){
         if(checkPathEndpoints(startId, endId)) throw new PathNotAvailableException();
-        var path = new Polyline();
-        path.getPoints()
-                .addAll(
-                getX(startId, true, 0),getY(startId, true, 0),
-                getX(startId, true, .4),getY(startId, true, .4),
-                getX(endId, false, .4),getY(endId, false, .4),
-                getX(endId, false, 0),getY(endId, false, 0)
-                );
+        var path = new PointPath();
+        path.add(new Vector2(getX(startId, true, 0),getY(startId, true, 0)));
+        path.add(new Vector2(getX(startId, true, .4),getY(startId, true, .4)));
+        path.add(new Vector2(getX(endId, false, .4),getY(endId, false, .4)));
+        path.add(new Vector2(getX(endId, false, 0),getY(endId, false, 0)));
         return path;
     }
 
     public static class PathNotAvailableException extends RuntimeException{};
 
-    private final ArrayList<Vehicle> vehicles = new ArrayList<>();
+    protected final ArrayList<Vehicle> vehicles = new ArrayList<>();
 
-    {
-        vehicles.add(new Vehicle(new Vector2(50, 50)));
-    }
-
-    public void update(double deltaTime){
+    public void update(long deltaTime){
         for(var vehicle: vehicles){
             vehicle.updatePosition(deltaTime);
             vehicle.updateSpeed(deltaTime, 1);
@@ -138,10 +133,6 @@ public abstract class AbstractBlock implements Block {
 
     public Collection<Vehicle> getVehicles(){
         return vehicles;
-    }
-
-    public void receiveVehicle(BlockConnection connection, Vehicle vehicle){
-
     }
 
 }

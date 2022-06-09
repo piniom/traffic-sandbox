@@ -1,7 +1,9 @@
 package pl.tcs.po.models.blocks;
 
 import javafx.scene.shape.Polyline;
+import pl.tcs.po.models.mobile.PointPath;
 import pl.tcs.po.models.mobile.Vector2;
+import pl.tcs.po.models.mobile.VectorRadial;
 import pl.tcs.po.models.mobile.Vehicle;
 
 import java.util.ArrayList;
@@ -30,10 +32,9 @@ public interface Block {
     boolean setOutConnection(BlockConnection connection);
     boolean setInConnection(BlockConnection connection);
 
-    Polyline getPath(int startId, int endId);
+    PointPath getPath(int startId, int endId);
 
-    void update(double deltaTime);
-    void receiveVehicle(BlockConnection connection, Vehicle vehicle);
+    void update(long deltaTime);
     Collection<Vehicle> getVehicles();
 
     static Vector2 getDimensions(){
@@ -42,4 +43,16 @@ public interface Block {
 
     Vector2 getPosition();
 
+    default Vector2 localToGlobalRotation(Vector2 point){
+        return point.rotateAround(Block.getDimensions().scale(.5), getRotation().radians());
+    }
+
+    default Vector2 localToGlobal(Vector2 point){
+        var rotated = localToGlobalRotation(point);
+        return rotated.add(getPosition());
+    }
+
+    default Vehicle newVehicle(Vector2 localPoint, double radians){
+        return new Vehicle(localToGlobal(localPoint), new VectorRadial(0, radians + getRotation().radians()), null);
+    }
 }

@@ -11,6 +11,7 @@ public record Vector2(double x, double y) {
     }
 
     public Vector2 scale(double factor){
+        if(length() == 0)return new Vector2();
         return new Vector2(x*factor, y*factor);
     }
 
@@ -40,4 +41,12 @@ public record Vector2(double x, double y) {
 
     public double width(){return x;}
     public double height(){return y;}
+
+    public Vector2 rotateAround(Vector2 other, double radians){
+        return this.subtract(other).toVectorRadial().rotate(radians).toVector2().add(other);
+    }
+
+    public VectorRadial toVectorRadial(){
+        return new VectorRadial(length(), Math.PI - Math.atan2(x,y));
+    }
 }
