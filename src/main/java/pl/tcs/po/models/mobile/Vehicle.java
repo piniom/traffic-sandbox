@@ -3,9 +3,9 @@ package pl.tcs.po.models.mobile;
 import javafx.scene.paint.Color;
 import pl.tcs.po.models.blocks.Block;
 import pl.tcs.po.models.blocks.BlockConnection;
-import pl.tcs.po.models.blocks.EmptyBlock;
 
 import java.util.*;
+import java.util.concurrent.Callable;
 
 public class Vehicle {
 
@@ -13,16 +13,18 @@ public class Vehicle {
 
     public final double maxSpeed = 30;
     public final double acceleration = 4;
-    public final Vector2 dimensions = new Vector2(10, 30);
+    public final Vector2 dimensions = new Vector2(r.nextInt(8,12), r.nextInt(25,35));
 
     private Vector2 position;
     private VectorRadial velocity;
     private final ArrayList<BlockConnection> connections;
-    private ArrayList<Vector2> path = new ArrayList<>();
+    private ArrayList<Pair> path = new ArrayList<>();
     private int pathIndex = 0;
-    private final Block source;
+    private Block source;
     public final Color color = Color.color(r.nextDouble(), r.nextDouble(), r.nextDouble());
+    public int priority = r.nextInt();
 
+    private record Pair(Vector2 point, Block addTo){}
 
     public Vehicle(Vector2 position, VectorRadial velocity, ArrayList<BlockConnection> connections){
         this.position = position;
@@ -31,9 +33,11 @@ public class Vehicle {
         this.source = connections.get(0).source;
         for(int i=1;i<connections.size();i++){
             var cur = connections.get(i);
-            path.addAll(cur.source.getPath(connections.get(i-1).targetIndex, cur.sourceIndex));
-        }
 
+            var points = cur.source.getPath(connections.get(i-1).targetIndex, cur.sourceIndex);
+            path.add(new Pair(points.get(0), cur.target));
+            for(int p=1;p<points.size();p++)path.add(new Pair(points.get(p), null));
+        }
     }
 
     private Vector2 leap(long deltaTime){
@@ -54,21 +58,37 @@ public class Vehicle {
         return false;
     }
 
-    public void update(long deltaTime){
+    public void update(long deltaTime, Collection<Vehicle> others){
         if(reachesTarget(deltaTime)){
             if(!(pathIndex + 1  < path.size())){
                 source.removeVehicle(this);
                 return;
             }
             pathIndex++;
-            target = path.get(pathIndex);
+            var pair= path.get(pathIndex);
+            target = pair.point;
+            if(pair.addTo != null){
+                source.removeVehicle(this);
+                pair.addTo.addVehicle(this);
+                source = pair.addTo;
+            }
         }
-        velocity = target.subtract(position).toVectorRadial().scaleToLength(30);
+        velocity = target.subtract(position).toVectorRadial().scaleToLength(velocity.length());
+        updateSpeed(deltaTime, others);
         updatePosition(deltaTime);
     }
 
-    public void updateSpeed(long deltaTime, double desiredSpeed){
-        velocity = new VectorRadial(desiredSpeed, velocity.radians());
+    private boolean shouldYieldTo(Vehicle other){
+        return false;
+//        if(other.priority >= this.priority)return false;
+//        return !(Math.abs(Math.sin(this.velocity.radians() - other.velocity.radians())) < 0.9);
+    }
+
+    public void updateSpeed(long deltaTime, Collection<Vehicle> others){
+        double len = velocity.length();
+        double diff = Math.max(len * deltaTime / 2000, 4);
+        if(others.stream().noneMatch(this::shouldYieldTo))velocity.scaleToLength(Math.min(30, len+diff));
+        else velocity = velocity.scaleToLength(Math.max(len-diff, 5));
     }
 
     public double getRotation(){
@@ -86,7 +106,4 @@ public class Vehicle {
         list = list.stream().map(v -> v.scale(.5).rotateAround(new Vector2(), velocity.radians()).add(position)).toList();
         return list;
     }
-
-    private static final double distanceThreshold = 5;
-
 }

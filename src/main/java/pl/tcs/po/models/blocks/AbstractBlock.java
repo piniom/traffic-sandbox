@@ -128,7 +128,7 @@ public abstract class AbstractBlock implements Block {
 
     public synchronized void update(long deltaTime){
         for(var vehicle: new ArrayList<>(vehicles)){
-            vehicle.update(deltaTime);
+            vehicle.update(deltaTime, this.vehicles);
         }
     }
 
@@ -140,7 +140,11 @@ public abstract class AbstractBlock implements Block {
         return vehicles;
     }
 
+    int vehicleCounter = 0;
+
     public void addVehicle(Vehicle vehicle){
+        vehicle.priority = vehicleCounter++;
+        System.out.println(vehicleCounter + " " + position);
         vehicles.add(vehicle);
     }
     public void removeVehicle(Vehicle vehicle){

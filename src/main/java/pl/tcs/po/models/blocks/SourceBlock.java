@@ -8,7 +8,7 @@ import pl.tcs.po.models.mobile.Vehicle;
 import java.util.Date;
 
 public class SourceBlock extends AbstractBlock{
-    private static final long spawnInterval = 200;
+    private static final long spawnInterval = 1000;
 
     private long lastSpawn;
 
@@ -22,19 +22,19 @@ public class SourceBlock extends AbstractBlock{
         while (true){
             var path = PathFinder.getRandomPath(this, 3);
             if(path != null){
-                return new Vehicle(localToGlobal(localPoint), new VectorRadial(0, radians + getRotation().radians()), path);
+                return new Vehicle(localToGlobal(localPoint), new VectorRadial(30, radians + getRotation().radians()), path);
             }
         }
     }
 
-    private void addVehicle(){
-        vehicles.add(newVehicle(new Vector2(50,45), Math.PI));
+    private void spawnVehicle(){
+        addVehicle(newVehicle(new Vector2(50,45), Math.PI));
         lastSpawn = new Date().getTime();
     }
 
     @Override
     public void update(long deltaTime){
-        if(new Date().getTime() - lastSpawn > spawnInterval)addVehicle();
+        if(new Date().getTime() - lastSpawn > spawnInterval)spawnVehicle();
         super.update(deltaTime);
     }
 
