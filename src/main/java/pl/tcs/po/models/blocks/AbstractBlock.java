@@ -26,7 +26,7 @@ public abstract class AbstractBlock implements Block {
     }
 
     public AbstractBlock(Vector2 position, Rotation rotation){
-        if(position != null) System.out.println(position.x() + " + " + position.y());
+        //if(position != null) System.out.println(position.x() + " + " + position.y());
         this.position = position;
         this.rotation = rotation;
         this.outConnections = new ArrayList<>(Collections.nCopies(SIDES_COUNT, null));
