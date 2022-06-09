@@ -125,4 +125,16 @@ public class Board {
         for(var row : blocks)for(var block : row)vehicles.addAll(block.getVehicles());
         return vehicles;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(width).append("," + height + ",");
+        for(Block[] blockArr : blocks) {
+            for(Block b : blockArr) {
+                sb.append(b.toString());
+            }
+        }
+        return sb.toString();
+    }
 }

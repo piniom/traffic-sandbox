@@ -135,4 +135,8 @@ public abstract class AbstractBlock implements Block {
         return vehicles;
     }
 
+    @Override
+    public String toString() {
+        return " " + getName() + "-" + rotation + "-" + position;
+    }
 }

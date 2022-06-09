@@ -49,4 +49,21 @@ public record Vector2(double x, double y) {
     public VectorRadial toVectorRadial(){
         return new VectorRadial(length(), Math.PI - Math.atan2(x,y));
     }
+
+    @Override
+    public String toString() {
+        return "" + x +"#" + y;
+    }
+
+    public static Vector2 fromString(String s) throws IllegalArgumentException {
+        String[] values = s.split("#");
+        try {
+            double x = Double.parseDouble(values[0]);
+            double y = Double.parseDouble(values[1]);
+            return new Vector2(x,y);
+        } catch(Exception e) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 }
