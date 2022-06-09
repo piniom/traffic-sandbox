@@ -38,7 +38,7 @@ public class BoardController {
     private int previousColumn = -1;
     private int previousRow = -1;
 
-    private boolean isRunning = false;
+    private volatile boolean isRunning = false;
     private Thread simulationThread;
 
     public BoardController(Board board){
@@ -164,18 +164,17 @@ public class BoardController {
         else startSimulation();
     }
 
-    void startSimulation(){
-        if(isRunning) throw new RuntimeException();
+    void startSimulation() {
+        if (isRunning) throw new RuntimeException();
         isRunning = true;
         mainPane.getChildren().add(canvas);
         simulationThread = new Thread(this::simulation);
         simulationThread.start();
     }
 
-
     void simulation() {
         long prevFrameTimestamp = new Date().getTime();
-        while(true){
+        while(isRunning){
 
             long curTimestamp = new Date().getTime();
             long deltaTime = curTimestamp-prevFrameTimestamp;
@@ -200,7 +199,6 @@ public class BoardController {
         if(!isRunning) throw new RuntimeException();
         isRunning = false;
         mainPane.getChildren().remove(canvas);
-        simulationThread.stop();
     }
 
     void renderBlocks(){
