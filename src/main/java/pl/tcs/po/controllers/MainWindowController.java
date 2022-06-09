@@ -85,7 +85,7 @@ public class MainWindowController implements Initializable {
         runningButton.setStyle("-fx-background-color: #5d69bf;");
 
         runningButton.setOnAction(e -> {
-            boardController.toggleRunning();
+            boardController.toggleSimulation();
         });
 
         var saveButton = new Button();

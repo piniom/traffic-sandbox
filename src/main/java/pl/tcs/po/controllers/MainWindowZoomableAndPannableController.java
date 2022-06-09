@@ -159,7 +159,7 @@ public class MainWindowZoomableAndPannableController implements Initializable {
         debugButton.setStyle("-fx-background-color: #5d69bf;");
 
         debugButton.setOnAction(e -> {
-            boardController.startSimulation();
+            boardController.toggleSimulation();
         });
 
         var saveButton = new Button();

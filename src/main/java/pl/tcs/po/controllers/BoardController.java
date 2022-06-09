@@ -8,19 +8,14 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import pl.tcs.po.models.Board;
 import pl.tcs.po.models.blocks.Block;
 import pl.tcs.po.models.blocks.BlockCreator;
 import pl.tcs.po.models.blocks.BlockFactory;
 import pl.tcs.po.models.blocks.Rotation;
-import pl.tcs.po.models.mobile.Vector2;
 import pl.tcs.po.views.BlockView;
-import pl.tcs.po.views.BlockViewDebug;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -164,7 +159,7 @@ public class BoardController {
         return newColumn != previousColumn || newRow != previousRow;
     }
 
-    public void toggleRunning(){
+    public void toggleSimulation(){
         if(isRunning) stopSimulation();
         else startSimulation();
     }
@@ -179,9 +174,6 @@ public class BoardController {
 
 
     void simulation() {
-
-
-
         long prevFrameTimestamp = new Date().getTime();
         while(true){
 

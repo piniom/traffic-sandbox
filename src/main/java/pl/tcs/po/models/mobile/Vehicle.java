@@ -42,11 +42,12 @@ public class Vehicle {
     public Vector2 getPosition(){return position;}
 
     public List<Vector2> getPolygon(){
-        var list = new LinkedList<Vector2>();
-        list.add(new Vector2(dimensions.x(), dimensions.y()).scale(.5).rotateAround(new Vector2(), velocity.radians()).add(position));
-        list.add(new Vector2(dimensions.x(), -dimensions.y()).scale(.5).rotateAround(new Vector2(), velocity.radians()).add(position));
-        list.add(new Vector2(-dimensions.x(), -dimensions.y()).scale(.5).rotateAround(new Vector2(), velocity.radians()).add(position));
-        list.add(new Vector2(-dimensions.x(), dimensions.y()).scale(.5).rotateAround(new Vector2(), velocity.radians()).add(position));
+        List<Vector2> list = new LinkedList<>();
+        list.add(new Vector2(dimensions.x(), dimensions.y()));
+        list.add(new Vector2(dimensions.x(), -dimensions.y()));
+        list.add(new Vector2(-dimensions.x(), -dimensions.y()));
+        list.add(new Vector2(-dimensions.x(), dimensions.y()));
+        list = list.stream().map(v -> v.scale(.5).rotateAround(new Vector2(), velocity.radians()).add(position)).toList();
         return list;
     }
 }
