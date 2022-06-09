@@ -130,9 +130,14 @@ public class Board {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(width).append("," + height + ",");
-        for(Block[] blockArr : blocks) {
-            for(Block b : blockArr) {
-                sb.append(b.toString());
+//        for(Block[] blockArr : blocks) {
+//            for(Block b : blockArr) {
+//                sb.append(b.toString());
+//            }
+//        }
+        for(int i = 0; i < getWidth(); i++) {
+            for(int j = 0; j < getHeight(); j++) {
+                sb.append(blocks[i][j].toString());
             }
         }
         return sb.toString();

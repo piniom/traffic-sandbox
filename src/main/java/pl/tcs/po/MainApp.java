@@ -18,6 +18,8 @@ public class MainApp extends Application {
     public static MainApp instance;
 
     Stage mainStage;
+    boolean hasBoardToLoad = false;
+    Board loadedBoard = null;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -70,7 +72,22 @@ public class MainApp extends Application {
         return mainStage;
     }
 
-    public void runNewSandbox(Board board) {
+    public void runNewSandbox(Board board) throws IOException {
         // TODO: finish implementation
+        hasBoardToLoad = true;
+        loadedBoard = board;
+        runNewSandbox();
+    }
+
+    public boolean hasBoardToLoad() {
+        if(hasBoardToLoad) {
+            hasBoardToLoad = false;
+            return true;
+        }
+        return false;
+    }
+
+    public Board getLoadedBoard() {
+        return loadedBoard;
     }
 }

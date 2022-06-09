@@ -44,7 +44,10 @@ public class MainWindowZoomableAndPannableController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        board = new Board(4, 3);
+        board = new Board(50, 50);
+        if(MainApp.instance.hasBoardToLoad()) {
+            board = MainApp.instance.getLoadedBoard();
+        }
         boardController = new BoardController(board);
 
         // TODO: adding cars layer to this group should work fine with pannable scrollPane
@@ -176,12 +179,6 @@ public class MainWindowZoomableAndPannableController implements Initializable {
         //TODO: set on action
 
         saveButton.setOnAction(e -> {
-            System.out.println(FileOperator.boardToString(board));
-            try {
-                System.out.println(FileOperator.stringToBoard(FileOperator.boardToString(board)));
-            } catch(Exception ex) {
-                ex.printStackTrace();
-            }
             save();
         });
 
@@ -220,8 +217,7 @@ public class MainWindowZoomableAndPannableController implements Initializable {
     private void save() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save map");
-        //TODO: uncomment
-        //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MAP file", "*.map"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MAP file", "*.map"));
         File file = fileChooser.showSaveDialog(MainApp.instance.getMainStage());
         if(file != null) {
             String boardString = FileOperator.boardToString(board);

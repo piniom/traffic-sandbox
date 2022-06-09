@@ -41,8 +41,7 @@ public class MainMenuController implements Initializable {
     private void configureFileChooser() {
         fileChooser = new FileChooser();
         fileChooser.setTitle("Select map file");
-        // TODO: uncomment
-        //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MAP file", "*.map"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MAP file", "*.map"));
     }
 
     private Group getMenuGroup() {
@@ -91,11 +90,9 @@ public class MainMenuController implements Initializable {
         loadButton.setGraphic(loadImageView);
         loadButton.setStyle("-fx-background-color: #5d69bf; ");
         loadButton.setOnAction(e -> {
-            // TODO load file
             File file = fileChooser.showOpenDialog(MainApp.instance.getMainStage());
             if(file != null) {
                 try {
-                    System.out.println("got file: " + file);
                     String fileString = Files.readString(file.toPath());
                     Board board = FileOperator.stringToBoard(fileString);
                     MainApp.instance.runNewSandbox(board);

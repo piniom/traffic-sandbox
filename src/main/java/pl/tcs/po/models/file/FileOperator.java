@@ -25,7 +25,7 @@ public class FileOperator {
         Board board = new Board(width, height);
         for(int i = 1; i < width-1; i++) {
             for(int j = 1; j < height-1; j++) {
-                String[] currentBlock = blocks[j*width+i + 1].split("-");
+                String[] currentBlock = blocks[i*height+j+1].split("-");
                 Rotation rotation = Rotation.fromString(currentBlock[1]);
                 Vector2 position = Vector2.fromString(currentBlock[2]);
                 Block block = BlockFactory.fromName(currentBlock[0], rotation, position);
