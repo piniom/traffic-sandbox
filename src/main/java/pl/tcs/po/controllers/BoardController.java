@@ -32,6 +32,7 @@ public class BoardController {
     BlockCreator currentBlock = BlockCreator.EMPTY;
     Rotation currentRotation = Rotation.NORTH;
     Block previousBlock = BlockCreator.EMPTY.getNewBlock(null, currentRotation);
+    boolean dragDetected = false;
 
     StackPane mainPane = new StackPane();
     VehicleCanvas vehicleCanvas;
@@ -80,7 +81,7 @@ public class BoardController {
     private void setColumnConstraints(GridPane grid) {
         for(int c=0;c< board.getWidth();c++){
             ColumnConstraints constraints = new ColumnConstraints();
-            constraints.setMaxWidth(100.5);
+            constraints.setMaxWidth(99);
             grid.getColumnConstraints().add(constraints);
         }
     }
@@ -88,7 +89,7 @@ public class BoardController {
     private void setRowConstraints(GridPane grid) {
         for(int r=0;r< board.getHeight();r++){
             RowConstraints constraints = new RowConstraints();
-            constraints.setMaxHeight(100.5);
+            constraints.setMaxHeight(99);
             grid.getRowConstraints().add(constraints);
         }
     }
@@ -96,6 +97,11 @@ public class BoardController {
     private Node getBlockViewNode(int column, int row){
         Node node = new BlockView(board.getBlock(column, row)).getNode();
         node.setOnMouseClicked(e -> {
+            if(dragDetected) {
+                dragDetected = false;
+                return;
+            }
+
             if(e.getButton().equals(MouseButton.PRIMARY)){
                 board.setBlock(column, row, currentBlock.getNewBlock(board.cellPosition(column, row), currentRotation));
                 updateBlock(column, row);
@@ -217,5 +223,9 @@ public class BoardController {
     public void resetPrevious() {
         previousColumn = -1;
         previousRow = -1;
+    }
+
+    public void handleDragDetected() {
+        dragDetected = true;
     }
 }

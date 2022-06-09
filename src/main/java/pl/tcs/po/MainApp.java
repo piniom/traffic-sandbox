@@ -42,13 +42,18 @@ public class MainApp extends Application {
         return FXMLLoader.load(Objects.requireNonNull(url));
     }
 
+    private Parent getMainWindowPannableAndZoomable() throws IOException {
+        var url = MainWindowController.class.getClassLoader().getResource("MainWindowZoomableAndPannable.fxml");
+        return FXMLLoader.load(Objects.requireNonNull(url));
+    }
+
     private Parent getMainMenuWindow() throws IOException {
         var url = MainMenuController.class.getClassLoader().getResource("MainMenu.fxml");
         return FXMLLoader.load(Objects.requireNonNull(url));
     }
 
     public void runNewSandbox() throws IOException {
-        Parent root = getMainWindow();
+        Parent root = getMainWindowPannableAndZoomable();
         Scene scene = new Scene(root);
         mainStage.setScene(scene);
     }
