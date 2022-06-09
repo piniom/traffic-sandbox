@@ -43,6 +43,7 @@ public class MainWindowZoomableAndPannableController implements Initializable {
         board = new Board(50, 50);
         boardController = new BoardController(board);
 
+        // TODO: adding cars layer to this group should work fine with pannable scrollPane
         boardGroup.getChildren().add(boardController.getParentView());
         mainBoardStackPane.getChildren().add(boardGroup);
 

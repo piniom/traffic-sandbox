@@ -40,6 +40,14 @@ public enum BlockCreator {
             return new EndBlock(position, rotation);
         }
     },
+    SOURCE(){
+        @Override
+        public Block getNewBlock(Vector2 position, Rotation rotation) { return new SourceBlock(position, rotation);}
+    },
+    DESTINATION(){
+        @Override
+        public Block getNewBlock(Vector2 position, Rotation rotation) { return new DestinationBlock(position, rotation);}
+    },
     EMPTY()
     ;
 

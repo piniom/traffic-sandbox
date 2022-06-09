@@ -15,6 +15,8 @@ public class BlockFactory {
             case "junction" -> new JunctionBlock(blockToRotate.getPosition(),nextRotation);
             case "roundabout" -> new RoundaboutBlock(blockToRotate.getPosition(), nextRotation);
             case "end" -> new EndBlock(blockToRotate.getPosition(), nextRotation);
+            case "source" -> new SourceBlock(blockToRotate.getPosition(), nextRotation);
+            case "destination" -> new DestinationBlock(blockToRotate.getPosition(), nextRotation);
             default -> new EmptyBlock(blockToRotate.getPosition());
         };
     }
@@ -29,6 +31,8 @@ public class BlockFactory {
             case "junction" -> new FadedJunctionBlock(rotation);
             case "roundabout" -> new FadedRoundaboutBlock(rotation);
             case "end" -> new FadedEndBlock(rotation);
+            case "source" -> new FadedSourceBlock(rotation);
+            case "destination" -> new FadedDestinationBlock(rotation);
             default -> new FadedEmptyBlock();
         };
     }
