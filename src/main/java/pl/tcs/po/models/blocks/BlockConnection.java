@@ -16,4 +16,9 @@ public class BlockConnection {
     public BlockConnection reversed(){
         return new BlockConnection(target, targetIndex, source, sourceIndex);
     }
+
+    @Override
+    public String toString(){
+        return source.getName() + sourceIndex + " | " + target.getName() + targetIndex;
+    }
 }

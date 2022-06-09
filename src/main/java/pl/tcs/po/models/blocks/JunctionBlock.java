@@ -15,7 +15,7 @@ public class JunctionBlock extends AbstractBlock{
 
     @Override
     protected boolean checkPathEndpoints(int startId, int endId){
-        if(startId == endId) return true;
+        if(startId == endId) return false;
         return super.checkPathEndpoints(startId, endId);
     }
 }

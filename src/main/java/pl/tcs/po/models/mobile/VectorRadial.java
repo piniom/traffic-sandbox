@@ -7,6 +7,7 @@ public record VectorRadial(double length, double radians) {
     public VectorRadial scale(double factor){
         return new VectorRadial(length * factor, radians);
     }
+    public VectorRadial scaleToLength(double desiredLength) { return new VectorRadial(desiredLength, radians);}
     public Vector2 toVector2(){
         return new Vector2(length * Math.sin(radians), -length * Math.cos(radians));
     }

@@ -1,6 +1,7 @@
 package pl.tcs.po.models.blocks;
 
 import javafx.scene.shape.Polyline;
+import pl.tcs.po.models.PathFinder;
 import pl.tcs.po.models.mobile.PointPath;
 import pl.tcs.po.models.mobile.Vector2;
 import pl.tcs.po.models.mobile.VectorRadial;
@@ -8,6 +9,7 @@ import pl.tcs.po.models.mobile.Vehicle;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public interface Block {
     ArrayList<BlockConnection> getOutConnections();
@@ -32,7 +34,7 @@ public interface Block {
     boolean setOutConnection(BlockConnection connection);
     boolean setInConnection(BlockConnection connection);
 
-    PointPath getPath(int startId, int endId);
+    List<Vector2> getPath(int startId, int endId);
 
     void update(long deltaTime);
     Collection<Vehicle> getVehicles();
@@ -52,7 +54,7 @@ public interface Block {
         return rotated.add(getPosition());
     }
 
-    default Vehicle newVehicle(Vector2 localPoint, double radians){
-        return new Vehicle(localToGlobal(localPoint), new VectorRadial(0, radians + getRotation().radians()), null);
-    }
+    void addVehicle(Vehicle vehicle);
+    void removeVehicle(Vehicle vehicle);
+
 }

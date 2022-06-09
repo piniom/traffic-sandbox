@@ -10,7 +10,7 @@ public class EndBlock extends AbstractBlock{
         super(position, rotation);
         setBiLink(Rotation.SOUTH, true);
         //receiveVehicle(inConnections.get(0), new Vehicle(getPosition()));
-        vehicles.add(newVehicle(new Vector2(0,50), Math.PI/4));
+
     }
 
     @Override

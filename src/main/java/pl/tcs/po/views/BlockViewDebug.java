@@ -13,7 +13,9 @@ import pl.tcs.po.models.blocks.Block;
 import pl.tcs.po.models.blocks.BlockConnection;
 import pl.tcs.po.models.blocks.Rotation;
 import pl.tcs.po.models.mobile.PointPath;
+import pl.tcs.po.models.mobile.Vector2;
 
+import java.util.List;
 import java.util.function.Function;
 
 public class BlockViewDebug extends BlockView{
@@ -22,7 +24,7 @@ public class BlockViewDebug extends BlockView{
         super(block);
     }
 
-    Polyline pointPathToPolyline(PointPath path){
+    Polyline pointPathToPolyline(List<Vector2> path){
         var line = new Polyline();
         for(var p : path)line.getPoints().addAll(p.x(), p.y());
         return line;

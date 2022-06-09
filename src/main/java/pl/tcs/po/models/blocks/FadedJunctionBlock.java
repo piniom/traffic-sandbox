@@ -13,7 +13,7 @@ public class FadedJunctionBlock extends AbstractBlock {
 
     @Override
     protected boolean checkPathEndpoints(int startId, int endId){
-        if(startId == endId) return false;
+        if(startId == endId) return true;
         return super.checkPathEndpoints(startId, endId);
     }
 }

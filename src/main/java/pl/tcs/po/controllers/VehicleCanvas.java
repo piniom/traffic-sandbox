@@ -18,7 +18,6 @@ public class VehicleCanvas {
         canvas = new Canvas(blocksX* Block.getDimensions().width(),
                 blocksY*Block.getDimensions().height());
         context = canvas.getGraphicsContext2D();
-        context.setFill(Color.color(0,0,0,.8));
     }
 
     void setOffset(Vector2 offset){
@@ -30,11 +29,10 @@ public class VehicleCanvas {
     }
 
     void drawVehicle(Vehicle vehicle){
+        context.setFill(vehicle.color);
         var dim = vehicle.dimensions;
-        var position = vehicle.getPosition().add(offset).add(dim.scale(-0.5));
         //Szymon's pixel problems :)))
-        position = position.scale(.99);
-        var polygon = vehicle.getPolygon().stream().map(v -> v.add(offset)).toList();
+        var polygon = vehicle.getPolygon().stream().map(v -> v.add(offset).scale(.99)).toList();
         double[] xs = polygon.stream().mapToDouble(Vector2::x).toArray();
         double[] ys = polygon.stream().mapToDouble(Vector2::y).toArray();
         context.fillPolygon(xs, ys, xs.length);
