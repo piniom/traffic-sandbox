@@ -9,10 +9,15 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import pl.tcs.po.MainApp;
+import pl.tcs.po.models.Board;
+import pl.tcs.po.models.file.FileOperator;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
@@ -22,13 +27,21 @@ public class MainMenuController implements Initializable {
 
     ImageView backgroundImageView, logoImageView;
     Button newButton, loadButton, settingsButton;
+    FileChooser fileChooser;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeImageViews();
+        configureFileChooser();
         initializeButtons();
         Group group = getMenuGroup();
         stackPane.getChildren().add(group);
+    }
+
+    private void configureFileChooser() {
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Select map file");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MAP file", "*.map"));
     }
 
     private Group getMenuGroup() {
@@ -77,7 +90,19 @@ public class MainMenuController implements Initializable {
         loadButton.setGraphic(loadImageView);
         loadButton.setStyle("-fx-background-color: #5d69bf; ");
         loadButton.setOnAction(e -> {
-            // TODO load file
+            File file = fileChooser.showOpenDialog(MainApp.instance.getMainStage());
+            if(file != null) {
+                try {
+                    String fileString = Files.readString(file.toPath());
+                    Board board = FileOperator.stringToBoard(fileString);
+                    MainApp.instance.runNewSandbox(board);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+
         });
         settingsButton = new Button();
         settingsButton.setGraphic(settingsImageView);

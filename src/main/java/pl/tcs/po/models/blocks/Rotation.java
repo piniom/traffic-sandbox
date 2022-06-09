@@ -1,6 +1,7 @@
 package pl.tcs.po.models.blocks;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public enum Rotation {
@@ -39,6 +40,14 @@ public enum Rotation {
             return WEST;
         }
         return NORTH;
+    }
+
+    public static Rotation fromString(String s) throws IllegalArgumentException{
+        if(Objects.equals(s, "EAST")) return EAST;
+        if(Objects.equals(s, "WEST")) return WEST;
+        if(Objects.equals(s, "SOUTH")) return SOUTH;
+        if(Objects.equals(s, "NORTH")) return NORTH;
+        throw new IllegalArgumentException();
     }
 
     double radians(){

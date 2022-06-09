@@ -13,13 +13,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import pl.tcs.po.MainApp;
 import pl.tcs.po.models.Board;
 import pl.tcs.po.models.blocks.BlockCreator;
+import pl.tcs.po.models.file.FileOperator;
 import pl.tcs.po.views.ImageLoader;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,6 +45,9 @@ public class MainWindowZoomableAndPannableController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         board = new Board(50, 50);
+        if(MainApp.instance.hasBoardToLoad()) {
+            board = MainApp.instance.getLoadedBoard();
+        }
         boardController = new BoardController(board);
 
         // TODO: adding cars layer to this group should work fine with pannable scrollPane
@@ -171,6 +178,10 @@ public class MainWindowZoomableAndPannableController implements Initializable {
         saveButton.setStyle("-fx-background-color: #5d69bf;");
         //TODO: set on action
 
+        saveButton.setOnAction(e -> {
+            save();
+        });
+
         var exitButton = new Button();
         Image exitImage = new Image(getClass().getResource("/images/exit.png").toString());
         ImageView exitImageView = new ImageView(exitImage);
@@ -201,5 +212,20 @@ public class MainWindowZoomableAndPannableController implements Initializable {
         HBox.setHgrow(spacer, Priority.ALWAYS);
         VBox.setVgrow(spacer, Priority.ALWAYS);
         return spacer;
+    }
+
+    private void save() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save map");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MAP file", "*.map"));
+        File file = fileChooser.showSaveDialog(MainApp.instance.getMainStage());
+        if(file != null) {
+            String boardString = FileOperator.boardToString(board);
+            try {
+                Files.writeString(file.toPath(), boardString);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

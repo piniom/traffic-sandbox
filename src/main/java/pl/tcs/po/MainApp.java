@@ -5,8 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import pl.tcs.po.controllers.MainMenuController;
 import pl.tcs.po.controllers.MainWindowController;
+import pl.tcs.po.models.Board;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -16,6 +18,8 @@ public class MainApp extends Application {
     public static MainApp instance;
 
     Stage mainStage;
+    boolean hasBoardToLoad = false;
+    Board loadedBoard = null;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -62,5 +66,28 @@ public class MainApp extends Application {
         Parent root = getMainMenuWindow();
         Scene scene = new Scene(root);
         mainStage.setScene(scene);
+    }
+
+    public Window getMainStage() {
+        return mainStage;
+    }
+
+    public void runNewSandbox(Board board) throws IOException {
+        // TODO: finish implementation
+        hasBoardToLoad = true;
+        loadedBoard = board;
+        runNewSandbox();
+    }
+
+    public boolean hasBoardToLoad() {
+        if(hasBoardToLoad) {
+            hasBoardToLoad = false;
+            return true;
+        }
+        return false;
+    }
+
+    public Board getLoadedBoard() {
+        return loadedBoard;
     }
 }

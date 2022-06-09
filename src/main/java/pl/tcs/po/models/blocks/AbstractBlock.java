@@ -1,5 +1,7 @@
 package pl.tcs.po.models.blocks;
 
+import javafx.scene.shape.Polyline;
+import pl.tcs.po.models.mobile.PointPath;
 import pl.tcs.po.models.mobile.Vector2;
 import pl.tcs.po.models.mobile.Vehicle;
 
@@ -151,4 +153,8 @@ public abstract class AbstractBlock implements Block {
         vehicles.remove(vehicle);
     }
 
+    @Override
+    public String toString() {
+        return " " + getName() + "-" + rotation + "-" + position;
+    }
 }
