@@ -25,3 +25,11 @@ gradle > TrafficSandbox > Tasks > application > run
   - User experience improvements
   - Path finding algorithm
   - Fundations for the car logic
+- **Version 10.0** - 2022/06/09
+  - Vehicle movement enabled
+  - Board serialization
+  - GUI improvements 
+  - Spanning and zoooming
+
+The project was developed by Jakub Kowalczyk and Szymon Wojtulewicz. The work was shared equally.
+ 
